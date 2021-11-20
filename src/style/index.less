@@ -1,0 +1,10 @@
+@import "./color/colorPalette";
+
+@color: red, gold, yellow, lime, green, cyan, blue, purple, magenta, grey;
+:root {
+  each(@color,.(@v1, @k1, @i1){
+        each(range(10), .(@v, @k, @i) {
+            --@{v1}-@{i}: color(~`colorPalette("@{v1}", @{i}) `);
+        })
+    });
+}

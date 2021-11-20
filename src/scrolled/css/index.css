@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+.top-banner {
+  width: 100vw;
+  height: 100vh;
+  background: url(/img/【5120x2880】彩色爆裂5k苹果壁纸_彼岸图网.jpg) no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+ul li {
+  list-style: none;
+}
+ul li div {
+  text-align: center;
+}
+ul li div img {
+  height: 50vh;
+  transform: scale(calc(1.8 - (0.8 * var(--progress))))
+    translateY(calc(-60px * (1 - var(--progress))));
+  opacity: var(--progress);
+}

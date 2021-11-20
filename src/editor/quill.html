@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <!-- Theme included stylesheets -->
+    <link href="/package/quill/quill.bubble.css" rel="stylesheet" />
+    <link href="/package/quill/quill.snow.css" rel="stylesheet" />
+    <link href="/package/highlight/github-dark-dimmed.css" rel="stylesheet" />
+    <title>Quill_富文本</title>
+    <style>
+      #editor-container {
+        height: 375px;
+        font-size: 16px;
+      }
+      code,
+      pre {
+        font-family: Consolas, Monaco, monospace;
+      }
+      .ql-editor img {
+        max-width: 50% !important;
+        border: 1px solid #000;
+        padding: 5px;
+      }
+
+      .embed-file {
+        margin: 2px;
+      }
+      .filename {
+        background-color: aqua;
+        padding: 2px 5px;
+      }
+      .filename::before {
+        content: "loading ";
+      }
+      .embed-file[data-status="success"] .filename::before {
+        content: "success ";
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="editor-container"></div>
+    <button id="send" @click="send()">get</button>
+
+    <button id="set">set</button>
+    <button id="gettext">get</button>
+    <button id="clear">clear</button>
+
+    <div id="chart-container">
+      <ul>
+        <li v-for="(item,index) in chartList" :id="'li'+index"></li>
+      </ul>
+    </div>
+  </body>
+</html>
+<script src="/package/highlight/highlight.min.js"></script>
+<script src="/package/quill/quill.js"></script>
+<script type="module">
+  hljs.configure({
+    // optionally configure hljs
+    languages: ["javascript", "ruby", "python"],
+  });
+  hljs.safeMode();
+  import { createApp } from "petite-vue";
+
+  import Delta from "quill-delta";
+  import FileEmbed from "./FileEmbed";
+  FileEmbed(Quill);
+  class QuillEdit {
+    constructor(dom, option) {
+      this.dom = dom;
+      this.option = typeof option == "object" ? option : this.defaultOption;
+
+      return this.init();
+    }
+    quill = null;
+    dom = "#editor-container";
+    defaultOption = {
+      modules: {
+        syntax: true,
+        toolbar: [["code-block"]],
+      },
+      placeholder: " ",
+      theme: "snow",
+      pasteFile: true,
+      pasteFileCallback: function (e) {},
+    };
+    option = {};
+    init() {
+      let quill = new Quill(this.dom, this.option);
+      this.quill = quill;
+      console.log(this);
+      if (this.option.pasteFile) {
+        document.getElementById("editor-container").addEventListener(
+          "paste",
+          function (e) {
+            let clipboardData = e.clipboardData;
+            if (clipboardData) {
+              let data = clipboardData.items;
+              if (data.length) {
+                for (let i = 0; i < data.length; i++) {
+                  let item = data[i];
+
+                  if (item.kind === "file") {
+                    let FileBlob = item.getAsFile();
+                    console.log("file");
+                    console.log(FileBlob);
+                    console.log(quill.getLength());
+                    if (item.type.startsWith("image/")) {
+                      if (FileBlob.size >= 1024 * 20) {
+                        console.log("loading");
+                        alert("文件超大");
+                        break;
+                      }
+                      const { type } = item;
+                      let reader = new FileReader();
+                      reader.readAsDataURL(FileBlob);
+                      reader.onload = (e) => {
+                        quill.insertEmbed(
+                          quill.getLength(),
+                          "image",
+                          e.target.result
+                        );
+                      };
+                    } else {
+                      quill.insertEmbed(quill.getLength() - 1, "FileEmbed", {
+                        File: FileBlob,
+                        callback: saveTxt(),
+                      });
+                      console.log(FileBlob);
+                    }
+                  } else {
+                    console.log("txt", item);
+                  }
+                }
+              }
+            }
+          },
+          false
+        );
+      }
+
+      this.quill.clipboard.addMatcher(Node.TEXT_NODE, function (node, delta) {
+        return new Delta().insert(node.data, {
+          color: "#000",
+          bold: false,
+          background: "#fff",
+        });
+      });
+      return this.quill;
+    }
+    getContents(callback = function () {}) {
+      let content = quill.getContents();
+      content.forEach(callback);
+      return content;
+    }
+    setContents(contents = []) {
+      quill.setContents(contents);
+    }
+  }
+
+  var quill = new QuillEdit("#editor-container");
+  var textTimeout;
+  init();
+  quill.on("text-change", function (delta, oldDelta, source) {
+    if (source == "api") {
+      console.log("An API call triggered this change.");
+    } else if (source == "user") {
+      console.log("A user action triggered this change.");
+    }
+    clearTimeout(textTimeout);
+    textTimeout = setTimeout(() => {
+      console.log(delta, oldDelta, source);
+      saveTxt(oldDelta);
+    }, 1000);
+  });
+  function saveTxt() {
+    let delta = quill.getContents();
+    window.localStorage.setItem("textStorage", JSON.stringify(delta));
+  }
+
+  function init() {
+    let delta = window.localStorage.getItem("textStorage");
+    if (delta) {
+      console.log(delta);
+      quill.setContents(JSON.parse(delta).ops);
+    }
+  }
+  // quill.insertEmbed(0, 'FileEmbed', {size:1024,name:"default"});
+  document.getElementById("set").onclick = function () {
+    let data = {
+      ops: [
+        {
+          insert: "Hello quill\n",
+        },
+        {
+          insert: {
+            image:
+              "https://qn.soulfree.cn/Snipaste_2021-06-27_13-48-51.png?imageView2/1/w/1200/h/800/interlace/1/q/1",
+          },
+        },
+        {
+          insert: "\n",
+        },
+        {
+          insert: {
+            //video: '/audio/1902.mp4'
+          },
+          attributes: {
+            width: 420,
+            height: 315,
+          },
+        },
+      ],
+    };
+    let content = quill.setContents(data.ops);
+  };
+
+  document.getElementById("send").onclick = function () {
+    let content = quill.getContents();
+    //console.log(JSON.stringify(content));
+  };
+  document.getElementById("gettext").onclick = function () {
+    let content = quill.getText(0, quill.getLength());
+    console.log(JSON.stringify(content));
+  };
+
+  class QuillRender {
+    constructor(dom, ops) {
+      console.log(dom, ops);
+      let quill = new Quill(dom, {
+        modules: {
+          toolbar: "",
+        },
+        placeholder: " ",
+        theme: "snow",
+        readonly: true,
+      });
+      quill.setContents(ops);
+      this.quill = quill;
+      return quill;
+    }
+    quill = null;
+    ops = [];
+    dom = null;
+    defaultOption = {
+      modules: {
+        toolbar: "",
+      },
+      placeholder: " ",
+      theme: "snow",
+      readonly: true,
+    };
+    quill = null;
+  }
+
+  createApp({
+    chartList: [],
+    send() {
+      let content = quill.getContents();
+      this.chartList.push(content);
+      console.log(JSON.stringify(content));
+      let i = this.chartList.length - 1;
+      this.$nextTick(function () {
+        new QuillRender(document.getElementById("li" + i), content.ops);
+      });
+    },
+  }).mount("body");
+</script>

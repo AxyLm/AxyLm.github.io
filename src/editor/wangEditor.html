@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <title>Document</title>
+    <style>
+      body {
+        padding-top: 50px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="div1">
+      <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+    </div>
+  </body>
+</html>
+<script src="/package/wangEditor/wangEditor.min.js"></script>
+<script type="module">
+  const E = window.wangEditor;
+  const editor = new E("#div1");
+  // 或者 const editor = new E( document.getElementById('div1') )
+  editor.create();
+
+  document.body.addEventListener(
+    "paste",
+    function (e) {
+      let clipboardData = e.clipboardData;
+      console.log(clipboardData.getData("text/html"));
+      if (clipboardData) {
+        let data = clipboardData.items;
+        console.log(data);
+        if (data.length) {
+          for (let i = 0; i < data.length; i++) {
+            let item = data[i];
+            if (item.kind != "file") {
+              console.log(item.ge);
+            }
+          }
+        }
+      }
+    },
+    false
+  );
+</script>

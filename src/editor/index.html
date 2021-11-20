@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <title>editor</title>
+
+    <link rel="stylesheet" href="/package/editor/css/editormd.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/package/editor/lib/codemirror/codemirror.min.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/package/editor/lib/codemirror/addon/dialog/dialog.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/package/editor/lib/codemirror/addon/search/matchesonscrollbar.css"
+    />
+    <script type="text/javascript" src="/package/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="/package/editor/lib/codemirror/codemirror.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/package/editor/lib/codemirror/modes.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/package/editor/lib/codemirror/addons.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/package/editor/lib/marked.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/package/editor/lib/prettify.min.js"
+    ></script>
+    <link rel="stylesheet" href="/package/editor/css/editormd.css" />
+  </head>
+
+  <body>
+    <div id="test-editormd"></div>
+
+    <button id="save">save</button>
+  </body>
+</html>
+
+<script src="/package/editor/editormd.min.js"></script>
+<script type="module">
+  var textTimeout;
+  var editor = editormd("test-editormd", {
+    width: "90%",
+    height: 640,
+    syncScrolling: "single",
+    autoLoadModules: false,
+    emoji: true,
+    markdown: window.localStorage.getItem("editorStorage"),
+    path: "/package/editor/lib/",
+    saveHTMLToTextarea: true,
+    onload: function () {
+      this.addKeyMap({
+        "Ctrl-S": function (cm) {
+          saveContent();
+        },
+        "Ctrl-A": function (cm) {
+          cm.execCommand("selectAll");
+        },
+      });
+      // this.removeKeyMap(keyMap2);
+    },
+    onchange: function (e) {
+      clearTimeout(textTimeout);
+      textTimeout = setTimeout(() => {
+        cacheMd();
+      }, 1000);
+    },
+  });
+  // editor.setMarkdown( window.localStorage.getItem("editorStorage") )
+  function cacheMd() {
+    let md = editor.getMarkdown();
+    window.localStorage.setItem("editorStorage", md);
+  }
+  //testEditor.getMarkdown();       // 获取 Markdown 源码
+  //testEditor.getHTML();           // 获取 Textarea 保存的 HTML 源码
+  //testEditor.getPreviewedHTML();  // 获取预览窗口里的 HTML，在开启 watch 且没有开启 saveHTMLToTextarea 时使用
+  const baseurl = "http://localhost:8033";
+  function saveContent() {
+    let md = editor.getMarkdown();
+    let cacheId = localStorage.getItem("cacheId");
+    let methods = "POST";
+    let url = baseurl + "/jottings";
+    if (cacheId) {
+      methods = "PATCH";
+      url += "/" + cacheId;
+    }
+    $.ajax({
+      url: url,
+      method: methods,
+      data: {
+        content: md,
+      },
+      success: function (e) {
+        console.log(e.code);
+      },
+    });
+  }
+  $("#save").click(saveContent());
+  document.body.addEventListener("paste", function (e) {
+    let clipboardData = e.clipboardData;
+
+    console.log();
+
+    // let clipboardDataHTML = clipboardData.getData("text/html")
+    // console.log(clipboardDataHTML);
+    // editor.config("htmlDecode", "style,script,iframe|onclick,title,onmouseover,onmouseout,style");
+    // editor.insertValue(clipboardDataHTML);
+    // editor.focus();
+    // editor.config("htmlDecode", false);
+    // if (clipboardData) {
+    //     let data = clipboardData.items;
+    //     if (data.length) {
+    //         for (let i = 0; i < data.length; i++) {
+    //             let item = data[i];
+    //             if (item.kind === "file") {
+    //                 let FileBlob = item.getAsFile()
+    //                 if (item.type.startsWith("image/")) {
+    //                     if (FileBlob.size >= 1024 * 20) {
+    //                         console.log("loading");
+    //                         alert("文件超大")
+    //                         break;
+    //                     }
+    //                     const {
+    //                         type
+    //                     } = item
+    //                     let reader = new FileReader();
+    //                     reader.readAsDataURL(FileBlob);
+    //                     reader.onload = (e) => {
+    //                         console.log(e.target.result);
+    //                     };
+    //                 } else {
+    //                     console.log(FileBlob);
+    //                 }
+    //             } else {
+    //                 console.log('txt', item);
+    //             }
+    //         }
+    //     }
+    // }
+  });
+</script>

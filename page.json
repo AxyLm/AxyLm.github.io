@@ -1,0 +1,70 @@
+[
+  {
+    "title": "我的博客",
+    "description": "",
+    "url": "https://www.soulfree.cn",
+    "imgUrl": "/mysoulfree/5.png",
+    "type": "url"
+  },
+  {
+    "title": "随机密码生成",
+    "description": "生成随机密码",
+    "imgUrl": "/mysoulfree/2.png",
+    "type": "build",
+    "path": "src/random_ps/index.html"
+  },
+  {
+    "title": "时钟-拟态玻璃",
+    "description": "",
+    "imgUrl": "/mysoulfree/img.png",
+    "type": "build",
+    "path": "src/clock/index.html"
+  },
+  {
+    "title": "鼠标-景深跟随",
+    "description": "",
+    "imgUrl": "/mysoulfree/6.png",
+    "type": "build",
+    "path": "src/follow_mouse/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/scrolled/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/左右拖拽对比/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/about/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/点阵文字/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/华为充电特效/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/404/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/mac_dock/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/卡片/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/geo3D/index.html"
+  },
+  {
+    "type": "build",
+    "path": "src/editor/quill.html"
+  }
+]

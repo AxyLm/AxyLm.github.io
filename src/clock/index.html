@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>时钟-拟态玻璃</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          35deg,
+          #e91e63,
+          #e91e63,
+          50%,
+          #ffc107 50%,
+          #ffc107
+        );
+      }
+
+      body::after {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          160deg,
+          #03a9f4,
+          #03a9f4,
+          50%,
+          transparent 50%,
+          transparent
+        );
+        animation: animate 5s ease-in-out infinite;
+      }
+
+      @keyframes animate {
+        0%,
+        100% {
+          transform: translateY(10px);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .box {
+        position: relative;
+        z-index: 1;
+        width: 70vw;
+        height: 70vw;
+        max-width: 500px;
+        max-height: 500px;
+        backdrop-filter: blur(25px);
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        animation: animate 5s ease-in-out infinite;
+        animation-delay: -2.5s;
+      }
+
+      .container {
+        position: relative;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        bottom: -150px;
+        width: 100%;
+        height: 60px;
+        background: radial-gradient(
+          rgba(0, 0, 0, 0.2),
+          transparent,
+          transparent
+        );
+        border-radius: 50%;
+      }
+
+      .clock {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: radial-gradient(transparent, rgba(255, 255, 255, 0.2)),
+          url(/img/clock.png);
+        background-size: cover;
+        border-radius: 50%;
+        backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-bottom: none;
+        border-right: none;
+        box-shadow: -10px -20px 20px rgba(255, 255, 255, 0.1),
+          10px 10px 20px rgba(0, 0, 0, 0.1) 0px 40px 50px rgba(0, 0, 0, 0.2);
+      }
+
+      .clock::before {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: #fff;
+        border-radius: 50%;
+        z-index: 10000;
+      }
+
+      .hour,
+      .min,
+      .sec {
+        position: absolute;
+      }
+
+      .hour,
+      .hr {
+        width: 160px;
+        height: 160px;
+      }
+
+      .min,
+      .mn {
+        width: 190px;
+        height: 190px;
+      }
+
+      .sec,
+      .sc {
+        width: 230px;
+        height: 230px;
+      }
+
+      .hr,
+      .sc,
+      .mn {
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        border-radius: 50%;
+      }
+
+      .hr::before {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 80px;
+        background: #ff105e;
+        border-radius: 10px;
+        z-index: 11;
+      }
+
+      .mn::before {
+        content: "";
+        position: absolute;
+        width: 5px;
+        height: 90px;
+        background: #fff;
+        border-radius: 10px;
+        z-index: 12;
+      }
+
+      .sc::before {
+        content: "";
+        position: absolute;
+        width: 1px;
+        height: 150px;
+        background: #fff;
+        z-index: 12;
+        border-radius: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="box">
+        <div class="clock">
+          <div class="hour">
+            <div class="hr" id="hr"></div>
+          </div>
+          <div class="min">
+            <div class="mn" id="mn"></div>
+          </div>
+          <div class="sec">
+            <div class="sc" id="sc"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  /* BV14r4y1K7Bp */
+  const deg = 6;
+  const hr = document.querySelector("#hr");
+  const mn = document.querySelector("#mn");
+  const sc = document.querySelector("#sc");
+  setInterval(() => {
+    let now = new Date();
+    let hh = now.getHours() * 30;
+    let mm = now.getMinutes() * deg;
+    let ss = now.getSeconds() * deg;
+    hr.style.transform = `rotateZ(${hh + mm / 12}deg)`;
+    mn.style.transform = `rotateZ(${mm}deg)`;
+    sc.style.transform = `rotateZ(${ss}deg)`;
+  });
+</script>

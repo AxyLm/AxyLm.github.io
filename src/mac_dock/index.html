@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>macDock</title>
+    <style>
+      body,
+      ul,
+      li {
+        padding: 0;
+        margin: 0;
+      }
+      html {
+        font-size: 15px;
+      }
+      body {
+        display: flex;
+        width: 100%;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        height: 100vh;
+      }
+      .glass {
+        width: 100%;
+        height: 18rem;
+        background-color: antiquewhite;
+        display: flex;
+        justify-content: center;
+      }
+      .dock {
+        --scale: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+      .dock li {
+        padding: 0 0.2rem;
+        cursor: pointer;
+        list-style: none;
+        font-size: calc(6rem * var(--scale));
+        position: relative;
+        top: calc((6rem * var(--scale) - 6rem) / 2 * -1);
+
+        /* transition: 0.015s all ease-in; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glass">
+      <ul class="dock">
+        <li>🥰</li>
+        <li>🥺</li>
+        <li>😃</li>
+        <li>🥱</li>
+        <li>😊</li>
+        <li>😲</li>
+        <li>😴</li>
+        <li>😏</li>
+        <li>😐</li>
+      </ul>
+    </div>
+  </body>
+</html>
+<script>
+  for (var li of document.querySelectorAll(".dock li")) {
+    li.addEventListener("mousemove", function (e) {
+      var item = e.target;
+      var itemRect = item.getBoundingClientRect();
+
+      var offset = Math.abs(e.clientX - itemRect.left) / itemRect.width;
+
+      var last = item.previousElementSibling || null;
+      var next = item.nextElementSibling || null;
+
+      var scale = 0.6;
+      resetScale();
+      if (last) {
+        // last.style.fontSize = (1 + scale * Math.abs(offset - 1)) * 6 + "rem"
+        last.style.setProperty("--scale", 1 + scale * Math.abs(offset - 1));
+      }
+      item.style.setProperty("--scale", 1 + scale);
+      // item.style.fontSize = (1 + scale ) * 6 + "rem"
+      if (next) {
+        // next.style.fontSize = (1 + scale * offset) * 6 + "rem"
+        next.style.setProperty("--scale", 1 + scale * offset);
+      }
+    });
+  }
+  document.querySelector(".dock").addEventListener("mouseleave", function () {
+    resetScale();
+  });
+  function resetScale() {
+    for (var li of document.querySelectorAll(".dock li")) {
+      li.style.setProperty("--scale", 1);
+    }
+  }
+</script>

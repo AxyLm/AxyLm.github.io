@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <title>Antd色卡生成算法</title>
+    <style>
+      @import "./index.less";
+
+      ul li {
+        list-style: none;
+        width: 100px;
+        height: 50px;
+        display: inline-block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <ul v-for="item in colorList">
+      <li
+        v-for="(color,i) in new Array(10)"
+        :style="{'background-color':'var(--'+item+'-'+(i+1)+')'}"
+      ></li>
+    </ul>
+  </body>
+</html>
+<script type="module">
+  import { createApp } from "petite-vue";
+  createApp({
+    colorList: [
+      "red",
+      "gold",
+      "yellow",
+      "lime",
+      "green",
+      "cyan",
+      "blue",
+      "purple",
+      "magenta",
+      "grey",
+    ],
+  }).mount("body");
+</script>

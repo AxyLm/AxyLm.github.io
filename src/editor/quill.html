@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <!-- Theme included stylesheets -->
+    <link href="/package/quill/quill.bubble.css" rel="stylesheet" />
+    <link href="/package/quill/quill.snow.css" rel="stylesheet" />
+    <link href="/package/highlight/github-dark-dimmed.css" rel="stylesheet" />
+    <title>Quill_富文本</title>
+    <style>
+      #editor-container {
+        height: 375px;
+        font-size: 16px;
+      }
+      code,
+      pre {
+        font-family: Consolas, Monaco, monospace;
+      }
+      .ql-editor img {
+        max-width: 50% !important;
+        border: 1px solid #000;
+        padding: 5px;
+      }
+
+      .embed-file {
+        margin: 2px;
+      }
+      .filename {
+        background-color: aqua;
+        padding: 2px 5px;
+      }
+      .filename::before {
+        content: "loading ";
+      }
+      .embed-file[data-status="success"] .filename::before {
+        content: "success ";
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/editor.93e1e222.js"></script>
+    <link rel="modulepreload" href="/assets/modulepreload-polyfill.b7f2da20.js">
+    <link rel="modulepreload" href="/assets/vendor.9fe468df.js">
+  </head>
+
+  <body>
+    <div id="editor-container"></div>
+    <button id="send" @click="send()">get</button>
+
+    <button id="set">set</button>
+    <button id="gettext">get</button>
+    <button id="clear">clear</button>
+
+    <div id="chart-container">
+      <ul>
+        <li v-for="(item,index) in chartList" :id="'li'+index"></li>
+      </ul>
+    </div>
+  </body>
+</html>
+<script src="/package/highlight/highlight.min.js"></script>
+<script src="/package/quill/quill.js"></script>
+

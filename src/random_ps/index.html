@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>随机密码</title>
+    <link
+      rel="icon"
+      href="https://cdn.jsdelivr.net/gh/AxyLm/Essay/html/%E9%9A%8F%E6%9C%BA%E5%AF%86%E7%A0%81/favicon.ico"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+      integrity="sha256-T/zFmO5s/0aSwc6ics2KLxlfbewyRz6UNw1s3Ppf5gE="
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/AxyLm/Essay/html/%E9%9A%8F%E6%9C%BA%E5%AF%86%E7%A0%81/btn.min.css"
+    />
+    <style>
+      body,
+      div {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #e6fffb;
+      }
+
+      label,
+      span,
+      div {
+        font-family: "Microsoft YaHei UI", "Helvetica", "Arial", sans-serif;
+      }
+
+      span {
+        font-size: 14px;
+      }
+
+      label {
+        font-size: 16px;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -khtml-user-select: none;
+        user-select: none;
+      }
+
+      #body {
+        width: 500px;
+        min-width: 30vw;
+        max-width: 90vw;
+        min-height: 50vh;
+        max-height: 90vh;
+        padding: 20px 10px;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/random_ps.cd755f44.js"></script>
+    <link rel="modulepreload" href="/assets/modulepreload-polyfill.b7f2da20.js">
+  </head>
+
+  <body>
+    <div id="body" class="shadow bg-white rounded">
+      <div class="alert alert-primary" role="alert">随机密码生成</div>
+      <form class="list-group list-group-flush">
+        <div class="form-group list-group-item">
+          <label class="form-check-label" for="number">普通数字：</label>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="number"
+              checked
+            />
+            <span class="text-secondary">【0-9】</span>
+          </div>
+        </div>
+        <div class="form-group list-group-item">
+          <label class="form-check-label" for="lower">小写字母：</label>
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="lower" />
+            <span class="text-secondary">【a-z】</span>
+          </div>
+        </div>
+        <div class="form-group list-group-item">
+          <label class="form-check-label" for="upper">大写字母：</label>
+          <div class="form-check form-check-inline">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="upper"
+              checked
+            />
+            <span class="text-secondary">【A-Z】</span>
+          </div>
+        </div>
+        <div class="form-group list-group-item">
+          <label class="form-check-label" for="chars">特殊字符：</label>
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" id="chars" />
+            <span class="text-secondary">【!"#$%&'()*+,-./】</span>
+          </div>
+        </div>
+        <div
+          class="form-group list-group-item"
+          style="margin-bottom: 0 !important"
+        >
+          <label class="form-label" for="length">密码长度：</label>
+          <div class="form-check form-check-inline">
+            <input
+              type="number"
+              class="form-control"
+              id="length"
+              min="1"
+              value="12"
+              max="128"
+            />
+          </div>
+        </div>
+      </form>
+      <button type="button" class="bubbly-button">生&nbsp;&nbsp;成</button>
+      <textarea class="form-control" id="result" readonly></textarea>
+    </div>
+  </body>
+
+  <script type="text/javascript">
+    var bgs = [
+      "#e6fffb",
+      "#f0f5ff",
+      "#e6f7ff",
+      "#fafafa",
+      "#f5f5f5",
+      "#fff0f6",
+    ];
+    document.body.style.backgroundColor =
+      bgs[Math.floor(Math.random() * bgs.length)];
+
+    var upperCaseChars = function () {
+      //生成大写字母  A的Unicode值为65
+      let str = [];
+      for (let i = 65; i < 91; i++) {
+        str.push(String.fromCharCode(i));
+      }
+      return str;
+    };
+    var lowerCaseChars = function () {
+      //生成小写字母  a的Unicode值为97
+      let str = [];
+      for (let i = 97; i < 123; i++) {
+        str.push(String.fromCharCode(i));
+      }
+      return str;
+    };
+    var numberChars = function () {
+      let str = [];
+      for (let i = 0; i < 9; i++) {
+        str.push(i);
+      }
+      return str;
+    };
+    function charts() {
+      let str = [];
+      for (let i = 33; i < 48; i++) {
+        str.push(String.fromCharCode(i));
+      }
+      return str;
+    }
+    function createPw() {
+      var chart_list = [
+        numberChars(),
+        lowerCaseChars(),
+        upperCaseChars(),
+        charts(),
+      ];
+      var check_list = [
+        document.querySelector("#number").checked,
+        document.querySelector("#lower").checked,
+        document.querySelector("#upper").checked,
+        document.querySelector("#chars").checked,
+      ];
+      var pass_list = [];
+
+      for (let i = 0; i < check_list.length; i++) {
+        const item = check_list[i];
+        if (item) {
+          pass_list = pass_list.concat(chart_list[i]);
+        }
+      }
+      var password = "";
+      var pasArrLen = document.querySelector("#length").value;
+      pass_list.sort(function () {
+        return 0.5 - Math.random();
+      });
+      if (pass_list.length > 0) {
+        for (let i = 0; i < pasArrLen; i++) {
+          password += pass_list[Math.floor(Math.random() * pass_list.length)];
+        }
+      }
+      document.querySelector("#result").value = password;
+      document.querySelector("#result").select();
+      document.execCommand("copy");
+    }
+    document
+      .querySelector(".bubbly-button")
+      .addEventListener("click", btnAni, false);
+    function btnAni(e) {
+      e.preventDefault;
+      e.target.classList.remove("animate");
+      e.target.classList.add("animate");
+      createPw();
+      setTimeout(function () {
+        e.target.classList.remove("animate");
+      }, 700);
+    }
+  </script>
+</html>

@@ -34,6 +34,17 @@
       "_modulepreload-polyfill.b7f2da20.js"
     ]
   },
+  "src/动态背景/index.html": {
+    "file": "assets/动态背景.9ca6cb7b.js",
+    "src": "src/动态背景/index.html",
+    "isEntry": true,
+    "imports": [
+      "_modulepreload-polyfill.b7f2da20.js"
+    ],
+    "css": [
+      "assets/动态背景.eb5a73e2.css"
+    ]
+  },
   "src/scrolled/index.html": {
     "file": "assets/scrolled.f5a63e2b.js",
     "src": "src/scrolled/index.html",
@@ -120,7 +131,7 @@
     ]
   },
   "list.html": {
-    "file": "assets/list.eb937289.js",
+    "file": "assets/list.2ede05cb.js",
     "src": "list.html",
     "isEntry": true,
     "imports": [
@@ -128,7 +139,7 @@
     ]
   },
   "index.html": {
-    "file": "assets/index.68170e1f.js",
+    "file": "assets/index.d17146bf.js",
     "src": "index.html",
     "isEntry": true,
     "imports": [

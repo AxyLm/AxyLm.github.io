@@ -28,6 +28,13 @@
     "path": "src/follow_mouse/index.html"
   },
   {
+    "title": "css动态背景",
+    "description": "",
+    "imgUrl": "/mysoulfree/7.png",
+    "type": "build",
+    "path": "src/动态背景/index.html"
+  },
+  {
     "type": "build",
     "path": "src/scrolled/index.html"
   },

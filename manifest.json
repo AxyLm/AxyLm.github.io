@@ -10,6 +10,17 @@
       "assets/404.53c5a94c.css"
     ]
   },
+  "src/2021/index.html": {
+    "file": "assets/2021.2f1e9977.js",
+    "src": "src/2021/index.html",
+    "isEntry": true,
+    "imports": [
+      "_modulepreload-polyfill.b7f2da20.js"
+    ],
+    "css": [
+      "assets/2021.8c16216d.css"
+    ]
+  },
   "src/random_ps/index.html": {
     "file": "assets/random_ps.cd755f44.js",
     "src": "src/random_ps/index.html",
@@ -122,16 +133,16 @@
     ]
   },
   "src/editor/quill.html": {
-    "file": "assets/editor.93e1e222.js",
+    "file": "assets/editor.391367b9.js",
     "src": "src/editor/quill.html",
     "isEntry": true,
     "imports": [
       "_modulepreload-polyfill.b7f2da20.js",
-      "_vendor.9fe468df.js"
+      "_vendor.083fda57.js"
     ]
   },
   "list.html": {
-    "file": "assets/list.2ede05cb.js",
+    "file": "assets/list.7d964c9f.js",
     "src": "list.html",
     "isEntry": true,
     "imports": [
@@ -139,18 +150,19 @@
     ]
   },
   "index.html": {
-    "file": "assets/index.d17146bf.js",
+    "file": "assets/index.542d1417.js",
     "src": "index.html",
     "isEntry": true,
     "imports": [
-      "_modulepreload-polyfill.b7f2da20.js"
+      "_modulepreload-polyfill.b7f2da20.js",
+      "_vendor.083fda57.js"
     ],
     "css": [
-      "assets/index.ee5c0ad6.css"
+      "assets/index.a775d4d4.css"
     ]
   },
-  "_vendor.9fe468df.js": {
-    "file": "assets/vendor.9fe468df.js"
+  "_vendor.083fda57.js": {
+    "file": "assets/vendor.083fda57.js"
   },
   "_modulepreload-polyfill.b7f2da20.js": {
     "file": "assets/modulepreload-polyfill.b7f2da20.js"

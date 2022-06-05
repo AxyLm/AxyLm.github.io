@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta name="keywords" content="生成随机密码,拟态玻璃,时钟,博客">
+    <meta name="description" content="一个拟态化的站点">
+    <meta http-equiv="Window-target" content="_top">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="robots" content="all">
+    <meta name="author" content="ganlin">
+    <meta http-equiv="expires" content="0">
+    <title>JadeRabbit - 业余项目</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.4/dist/antd.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+        .item {
+            opacity: 0;
+            transform: translateY(150px);
+        }
+    </style>
+    <script type="module">
+        var colors = [
+            { bg: "#4ecbd4", text: "#f6f5f7", m1: "#57e3ed", m2: "#45b3bb" },
+            { bg: "#55b9f3", text: "#f6f5f7", m1: "#62d5ff", m2: "#489dcf" },
+            { bg: "#dca3a3", text: "#f6f5f7", m1: "#fdbbbb", m2: "#bb8b8b" },
+            { bg: "#f1707d", text: "#f6f5f7", m1: "#ff8190", m2: "#cd5f6a" },
+            { bg: "#e7dbca", text: "#001f3f", m1: "#fffce8", m2: "#c4baac" },
+            { bg: "#b8f1cc", text: "#001f3f", m1: "#d4ffeb", m2: "#9ccdad" },
+        ]
+        var len = colors.length
+        var color = colors[Math.floor(Math.random() * len) || 0]
+        document.documentElement.style.setProperty('--text-color', color.text)
+        document.documentElement.style.setProperty('--main-bg', color.bg)
+        document.documentElement.style.setProperty('--shadow-1', color.m1)
+        document.documentElement.style.setProperty('--shadow-2', color.m2)
+    </script>
+</head>
+
+<body>
+    <div id="app" class="content" style="display: none;" v-show="appstart">
+        <header>
+            <a-col span="24">
+                <span class="title_text" v-for="item in title.split('')">{{item}}</span>
+            </a-col>
+        </header>
+        <div class="content">
+            <a-row :gutter="[20,20]">
+                <transition-group name="list" tag="p" v-on:enter="enter">
+                    <a-col span="8" v-for="(item,index) in list" :key="item" :xs="{span:24,gutter:[20,40]}" :sm="12"
+                        :md="8" :lg="6" :xl="4" class="item">
+                        <a-card hoverable @click="goDetail(item)" :bodyStyle="{height:'80px'}" v-if="showMode == 'grid'"
+                            class="Card" :bordered="false">
+                            <img class="img" slot="cover" :alt="item.title"
+                                v-lazy="qn_url+item.imgUrl+'?imageView2/1/w/1200/h/800/interlace/1/q/45'" />
+                            <a-card-meta :title="item.title"></a-card-meta>
+                        </a-card>
+                    </a-col>
+                </transition-group>
+            </a-row>
+        </div>
+        <div id="components-back-top-demo-custom">
+            <a-back-top></a-back-top>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.2.3/velocity.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+<script src="https://cdn.jsdelivr.net/npm/ant-design-vue@1.7.4/dist/antd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-lazyload@1.3.3/vue-lazyload.min.js"></script>
+<script type="module">
+    const qn_url = "https://qn.soulfree.cn"
+    Vue.use(VueLazyload, {
+        preLoad: 1,
+        error: qn_url + '/Snipaste_2021-06-27_13-48-51.png?imageView2/1/w/1200/h/800/interlace/1/q/1',
+        loading: qn_url + '/Snipaste_2021-06-27_13-48-51.png?imageView2/1/w/1200/h/800/interlace/1/q/1',
+    })
+    new Vue({
+        el: '#app',
+        data: {
+            appstart: true,
+            list: [],
+            qn_url: qn_url,
+            showMode: "grid",
+            renderIndex: 1,
+            title: "MyProject"
+        },
+        created() {
+            var that = this
+            setTimeout(function () {
+                for (var i = 0; i < env_index_page.length; i++) {
+                    if (env_index_page[i].title) {
+                        that.list.push(env_index_page[i])
+                    }
+                }
+            }, 100);
+        },
+        methods: {
+            goDetail(item) {
+                if (item.type == "build") {
+                    window.open(item.path)
+                    return false;
+                }
+                window.open(item.url)
+            },
+            changeMode(mode) {
+                if (mode) {
+                    this.showMode = mode
+                } else {
+                    this.showMode = "list"
+                }
+            },
+            enter: function (el, done) {
+                var delay = this.renderIndex * 150
+                this.renderIndex++
+                Velocity(el,
+                    { opacity: 1, translateY: "0" },
+                    { duration: delay, complete: done }
+                )
+            },
+        },
+    })
+</script>
